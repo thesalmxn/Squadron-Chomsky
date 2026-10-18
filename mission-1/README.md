@@ -15,17 +15,20 @@ The project includes reports, a protocol map, an ethics sandbox, an API-enabled 
 ## 1. Project structure
 
 ```text
-aura_dialogic_engine/
-├── 04_dialogic_engine.py
+mission-1/
 ├── .env.example
+├── 04_dialogic_engine.py
+├── CORE_ARCHITECT_WALKTHROUGH.md
 ├── README.md
 ├── requirements.txt
+├── SUBMISSION_CHECKLIST.md
 ├── reports/
 │   ├── 01_Alignment_Brief.md
 │   ├── 02_Socratic_Protocol_Map.md
 │   └── 03_Galilean_Sandbox.md
 ├── outputs/
-│   └── 05_Execution_Transcript.txt
+│   ├── 05_Execution_Transcript.txt
+│   └── TEST_RESULTS.txt
 └── tests/
     └── test_dialogic_engine.py
 ```
