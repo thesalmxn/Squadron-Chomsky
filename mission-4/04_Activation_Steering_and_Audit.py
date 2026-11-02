@@ -190,7 +190,7 @@ if __name__ == "__main__":
     rows = alignment_tax_audit(
         model, tokenizer, v, layer_idx,
         _truth_eval_prompts(),
-        alphas=(-20.0, -10.0, 0.0, 10.0, 20.0),
+        alphas=(-5.0, -2.5, 0.0, 2.5, 5.0),
         device=device,
     )
 
