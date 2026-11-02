@@ -42,7 +42,7 @@ def extract_steering_vector(model, tokenizer, pairs, layer_idx, device="cpu"):
     v = h_honest - h_syco
     # Normalise, then scale so alpha in [-20, +20] is comparable to
     # residual-stream magnitudes (otherwise alpha in [-2, +2] has no effect).
-    return 10.0 * v / v.norm().clamp(min=1e-8)
+    return 2.0 * v / v.norm().clamp(min=1e-8)
 
 
 # ----------------------------------------------------------------------
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     print(f"[main] loading {DEFAULT_MODEL} on {device} ...")
     tokenizer = AutoTokenizer.from_pretrained(DEFAULT_MODEL)
     model = AutoModelForCausalLM.from_pretrained(
-        DEFAULT_MODEL, torch_dtype=torch.float32
+        DEFAULT_MODEL, dtype=torch.float32
     ).to(device).eval()
 
     layer_idx = min(8, len(model.model.layers) - 1)
