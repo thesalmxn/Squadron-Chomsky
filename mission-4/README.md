@@ -99,12 +99,24 @@ Or run the convenience script to execute the four components in sequence. It sto
 python 00_run_all.py
 ```
 
-### Expected behavior
+### Expected outputs
 
-- **Part 1:** Prints successful checks for `get_batch_logps` and DPO gradient isolation.
-- **Part 2:** Prints pairwise accuracy and calibration bins, and saves `bt_calibration.png`. The example uses synthetic data.
-- **Part 3:** Prints a Pearson correlation, SimPO loss, and memory comparison. Some values use generated data and can vary between runs. On a CPU-only PyTorch build, CUDA VRAM profiling is unavailable and the script uses a CPU model-size proxy.
-- **Part 4:** Downloads the selected model the first time it runs, extracts a steering vector, and prints truthfulness-proxy and reasoning scores for alpha values `-20`, `-10`, `0`, `10`, and `20`. Scores depend on the model and hardware; CPU inference may be slow.
+The first three scripts use synthetic data for their demonstrations. The following values are example output; random data, library versions, and hardware can cause small differences.
+
+- **Part 1:** Assertions pass for `get_batch_logps()` and `test_dpo_gradient_isolation`, confirming that the policy is updated while the reference model remains frozen.
+- **Part 2:** Prints pairwise accuracy around `0.5938` and saves `bt_calibration.png`.
+- **Part 3:** Prints a Pearson correlation around `0.979`, a SimPO loss around `1.5175`, and a memory reduction around `50.0%` when comparing two models with one. On CPU-only systems, the memory comparison is a model-size proxy rather than a GPU VRAM measurement.
+- **Part 4:** Downloads `Qwen/Qwen2.5-0.5B-Instruct` on its first run, extracts a steering vector with 896 dimensions for this model, and sweeps alpha from `-5.0` to `5.0`. In the example run, larger steering magnitudes coincide with lower reasoning accuracy:
+
+  ```text
+  [audit] alpha=-5.0  truth=100.00%  reasoning=50.00%
+  [audit] alpha=-2.5  truth=100.00%  reasoning=50.00%
+  [audit] alpha=+0.0  truth=100.00%  reasoning=50.00%
+  [audit] alpha=+2.5  truth=100.00%  reasoning=50.00%
+  [audit] alpha=+5.0  truth=100.00%  reasoning=25.00%
+  ```
+
+  These scores can vary with the model, hardware, and generation behavior. The trend at extreme alpha values is an observed example, not a guaranteed result.
 
 ## Jupyter Notebook
 
@@ -114,12 +126,12 @@ The `ps04_solution.ipynb` notebook provides a unified view of the mission:
 2. Select the mission's `.venv` as the notebook kernel.
 3. Run all cells.
 
-## Git Commit
+## Git Commit Protocol
 
-To commit the README change, run these commands from the repository root and adjust the branch name if needed:
+To stage and commit the README update from the repository root:
 
 ```powershell
 git add mission-4/README.md
-git commit -m "docs(ps04): fix README markdown formatting"
+git commit -m "docs(ps04): update README with final verified outputs"
 git push origin main
 ```
